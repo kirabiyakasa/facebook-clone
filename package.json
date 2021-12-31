@@ -1,5 +1,5 @@
 {
-  "name": "facebook_clone2",
+  "name": "facebook_clone",
   "private": true,
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
