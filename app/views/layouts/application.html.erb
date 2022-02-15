@@ -10,7 +10,45 @@
   </head>
 
   <body>
-    <%# add top menu (navbar) %>
+    <nav id="navbar">
+      <% if user_signed_in? %>
+
+        <div class="nav-sub-container">
+          <%= link_to(:root) do %>
+            <div id="home-button">HOME</div>
+          <% end %>
+        </div>
+
+        <div class="nav-sub-container">
+          <div id="logo">LOGO</div>
+          <%# center image %>
+        </div>
+
+        <div class="nav-sub-container">
+          <%= link_to (@user), id: 'user-icon' do %>
+            <%= image_tag current_user.gravatar_url, :class => "gravatar" %>
+          <% end %>
+
+          <div id="notifications">N-ICON</div>
+          <%# notifications icon and menu on top right%>
+          <div id="user-dropdown-menu">
+            <button id="user-dropbtn">MENU</button>
+            <menu id="user-menu-content">
+            stuff
+          <%# top right menu, to right of user icon %>
+            <%# display name at top of menu, below user icon %>
+            <%# settings option in menu %>
+            <%# sign out option in menu %>
+            <%# clicking anywhere other than in the menu will close menu %>
+            </menu>
+          </div>
+          <%# end menu %>
+        </div>
+
+      <% else %>
+        <%# stuff %>
+      <% end %>
+    </nav>
     <%# show notifications on the top right %>
     <%= yield %>
   </body>

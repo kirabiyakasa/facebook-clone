@@ -1,35 +1,35 @@
 class User < ApplicationRecord
+  include Gravtastic
+  gravtastic
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  #has_many :relationships, ->(user) { where("(friend_a_id = ? OR friend_b_id = ?) 
-  #                                    AND relationship_type = friends", 
-  #                                    user.id, user.id) }
-
   has_many :friendships
   has_many :inverse_friendships, :class_name => "Friendship", 
            :foreign_key => "friend_id"
+  has_many :posts
+  has_many :likes
 
   def friends
-    friends_array = friendships.map{
-      |friendship| friendship.friend if friendship.confirmed
+    friend_ids = friendships.map{
+      |friendship| friendship.friend_id if friendship.confirmed
     }
-    friends_array + inverse_friendships.map{
-      |friendship| friendship.user if friendship.confirmed
+    friend_ids += inverse_friendships.map{
+      |friendship| friendship.user_id if friendship.confirmed
     }
-    friends_array.compact
+    User.where(id: friend_ids)
   end
 
-  # Users who have yet to confirme friend requests
+  # Users to whom unconfirmed friend requests have been sent
   def pending_friends
     friendships.map{
       |friendship| friendship.friend if !friendship.confirmed
     }.compact
   end
 
-  # Users who have requested to be friends
+  # Users from whom friend requests have been sent
   def friend_requests
     inverse_friendships.map{
       |friendship| friendship.user if !friendship.confirmed

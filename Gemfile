@@ -54,3 +54,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
+
+gem 'faker'
+
+gem 'pagy', '= 5.10.1'
+
+gem 'gravtastic'

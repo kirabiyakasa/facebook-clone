@@ -13,3 +13,102 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+  background-color: slategrey;
+  margin: 0;
+}
+
+/* vertically center content in navbar
+#user-menu-container, #user-icon, #notifications, #home-button { 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+*/
+
+#navbar {
+  background-color: blueviolet;
+  display: flex;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.nav-sub-container:first-child, .nav-sub-container:last-child { 
+  flex: 1;
+  display: flex;
+}
+
+.nav-sub-container:last-child {
+  justify-content: flex-end;
+}
+
+#home-button {
+  background-color: seagreen;
+}
+
+#logo {
+  background-color: brown;
+}
+
+#notifications {
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: tomato;
+}
+
+#user-icon {
+  height: 30px;
+  line-height: 30px;
+  background-color: violet;
+}
+
+.gravatar {
+  height: inherit;
+}
+
+#user-dropdown-menu {
+  position: relative;
+  display: inline-block;
+  background-color: red;
+}
+
+#user-dropbtn {
+  all: unset;
+  background-color: red;
+}
+
+#home-button, #notifications, #user-dropbtn, #logo {
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 30px;
+  line-height: 30px;
+}
+
+#user-menu-content {
+  margin: 0;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0px;
+}
+
+#user-menu-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+#user-menu-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+#user-dropdown-menu:hover #user-menu-content {display: block;cursor: pointer;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+#user-dropdown-menu:hover #user-dropbtn {background-color: #3e8e41;}

@@ -1,0 +1,33 @@
+#posts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post {
+  background-color: grey;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.post-header {
+  background-color: darkgrey;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.post-body {
+  margin: 10px;
+}
+
+.likes-dislikes {
+  display: flex;
+  padding: 3px;
+}
+
+.likes {
+  margin-right: 10px;
+}
