@@ -1,5 +1,57 @@
-<div id="pending-friend">
-  <%  %>
+<div id="pending-friends">
+  <h2>Pending Friends</h2>
+
+  <% if @friend_requests.any? %>
+    <div id="incoming-requests">
+      <h3>Incoming Friend Requests</h3>
+      <% @inverse_friendships.each do |f| %>
+        <% unless f.confirmed %>
+          <div class="friend-name">
+            <%= link_to user_path(id: f.user.id) do %>
+              <%= f.user.name %>
+            <% end %>
+          </div>
+          <%= button_to 'Accept',
+              accept_friendship_path(id: f.id), 
+              method: 'patch'
+          %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @pending_friends.any? %>
+    <div id="outgoing-requests">
+      <h3>Outgoing Requests</h3>
+      <% @friendships.each do |f| %>
+        <% unless f.confirmed %>
+          <div class="friend-name">
+            <%= link_to user_path(id: f.user.id) do %>
+              <%= f.friend.name %>
+            <% end %>
+          </div>
+          <%= button_to 'Cancel',
+              cancel_friendship_path(id: f.id),
+              method: 'delete'
+          %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
-<div id="friend-list"></div>
+<div id="friend-list">
+  <h2>Friends</h2>
+  <% @friends.each do |friend| %>
+    <% friendship_id = %>
+    <div class="friend-name">
+      <%= link_to user_path(id: friend.id) do %>
+        <%= friend.name %>
+      <% end %>
+    </div>
+    <%= button_to 'Remove Friend', 
+        remove_friendship_path(id: get_friendship_id(friend.id)),
+        method: 'delete'
+    %>
+  <% end %>
+</div>

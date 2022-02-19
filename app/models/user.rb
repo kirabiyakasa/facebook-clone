@@ -24,16 +24,18 @@ class User < ApplicationRecord
 
   # Users to whom unconfirmed friend requests have been sent
   def pending_friends
-    friendships.map{
-      |friendship| friendship.friend if !friendship.confirmed
+    friend_ids = friendships.map{
+      |friendship| friendship.friend_id if !friendship.confirmed
     }.compact
+    User.where(id: friend_ids)
   end
 
   # Users from whom friend requests have been sent
   def friend_requests
-    inverse_friendships.map{
-      |friendship| friendship.user if !friendship.confirmed
+    user_ids = inverse_friendships.map{
+      |friendship| friendship.user_id if !friendship.confirmed
     }.compact
+    User.where(id: user_ids)
   end
 
   def confirm_friend(user)
