@@ -1,5 +1,14 @@
+<%= image_tag @user.gravatar_url %>
+<%= @user.name %>
+<%# option to show email depending on user settings %>
+<div id="add-friend-button">
+  <% unless user_is_self?(@user.id) || current_user.friend?(@user) %>
+    <%= button_to 'Add Friend', friendships_path(friend_id: @user.id) %>
+  <% end %>
+</div>
 
-<%# show the user's timeline %>
+<%= render 'posts/posts_list' %>
+
 <%# show forum for creating new posts on user's timeline %>
 <%# only allow user to post on their own timeline %>
 <%# other users can comment %>
