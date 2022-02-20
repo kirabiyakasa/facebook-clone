@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  before_action :user_still_signed_in?, except: [:new]
+  skip_before_action :user_still_signed_in?, only: [:new]
+  skip_before_action :get_notifications
 
   # before_action :configure_sign_in_params, only: [:create]
 

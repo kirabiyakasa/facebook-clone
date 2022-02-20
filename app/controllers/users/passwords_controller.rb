@@ -2,6 +2,7 @@
 
 class Users::PasswordsController < Devise::PasswordsController
   skip_before_action :user_still_signed_in?
+  skip_before_action :get_notifications
 
   # GET /resource/password/new
   # def new

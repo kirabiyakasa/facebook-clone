@@ -52,10 +52,36 @@ body {
   background-color: brown;
 }
 
-#notifications {
+#notifications-dropdown-menu {
+  position: relative;
+  display: inline-block;
   margin-left: 10px;
   margin-right: 10px;
   background-color: tomato;
+}
+
+#notifications-dropbtn {
+  all: unset;
+  background-color: tomato;
+}
+/* do stuff to make notifications menu */
+
+#notifications-menu-content {
+  margin: 0;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0px;
+}
+
+#notifications-menu-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 #user-icon {
@@ -79,7 +105,7 @@ body {
   background-color: red;
 }
 
-#home-button, #notifications, #user-dropbtn, #logo {
+#home-button, #notifications-dropbtn, #user-dropbtn, #logo {
   padding-left: 10px;
   padding-right: 10px;
   height: 30px;
@@ -105,10 +131,18 @@ body {
 }
 
 /* Change color of dropdown links on hover */
-#user-menu-content a:hover {background-color: #ddd;}
+#user-menu-content a:hover, #notifications-menu-content a:hover {
+  background-color: #ddd;
+}
 
 /* Show the dropdown menu on hover */
-#user-dropdown-menu:hover #user-menu-content {display: block;cursor: pointer;}
+#user-dropdown-menu:hover #user-menu-content, 
+#notifications-dropdown-menu:hover #notifications-menu-content {
+  display: block;cursor: pointer;
+}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-#user-dropdown-menu:hover #user-dropbtn {background-color: #3e8e41;}
+#user-dropdown-menu:hover #user-dropbtn,
+#notifications-dropdown-menu:hover #notifications-dropbtn {
+  background-color: #3e8e41;
+}

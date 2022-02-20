@@ -1,8 +1,9 @@
 class FriendshipsController < ApplicationController
   before_action :valid_friend_request?, only: [:create]
+  after_action :new_friend_notification, only: [:create]
 
   def index
-    @user = User.find(params[:user_id])
+    @user = current_user
     @friendships = @user.friendships.preload(:friend)
     @inverse_friendships = @user.inverse_friendships.preload(:user)
 
@@ -12,30 +13,29 @@ class FriendshipsController < ApplicationController
   end
 
   def create
-    current_user.friendships.build(friend_id: @friend.id).save
+    @friendship = current_user.friendships.build(friend_id: params[:friend_id])
+    @friendship.save
   end
 
   def accept
     @friendship = Friendship.find(params[:id])
-    if @friendship.friend_id == current_user.id 
-      @friendship.update(confirmed: true)
-    else
-      head(403)
-    end
+
+    head(403) if recevied_request? == false || @friendship.confirmed
+    @friendship.update(confirmed: true)
   end
 
   def cancel
     @friendship = Friendship.find(params[:id])
-    head(403) if @friendship.confirmed
-    if @friendship.user_id == current_user.id 
-      @friendship.destroy
-    end
+
+    head(403) if sent_request? == false || @friendship.confirmed
+    @friendship.destroy
   end
 
   def remove
     @friendship = Friendship.find(params[:id])
+
     head(403) unless @friendship.confirmed
-    if [@friendship.user_id, @friendship.friend_id].include?(current_user.id) 
+    if in_friendship?
       @friendship.destroy
     end
   end
@@ -43,10 +43,29 @@ class FriendshipsController < ApplicationController
   private
 
   def valid_friend_request?
-    @friend = User.find(params[:friend_id])
-    if helpers.user_is_self?(@friend.id) || current_user.friend?(@friend)
+    if current_user.user_is_self?(params[:friend_id]) ||
+       current_user.friendship_already_exists?(params[:friend_id])
       head(403)
     end
+  end
+
+  def recevied_request?
+    @friendship.friend_id == current_user.id
+  end
+
+  def sent_request?
+    @friendship.user_id == current_user.id
+  end
+
+  def in_friendship?
+    [@friendship.user_id, @friendship.friend_id].include?(current_user.id)
+  end
+
+  def new_friend_notification
+    friend_id = @friendship.friend_id
+    type = 'Friendship'
+    notifiable_id = @friendship.id
+    create_notification(friend_id, type, notifiable_id)
   end
 
 end

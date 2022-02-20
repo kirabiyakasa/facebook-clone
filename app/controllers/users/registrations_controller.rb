@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :user_still_signed_in?, except: [:new]
+  skip_before_action :user_still_signed_in?, only: [:new]
+  skip_before_action :get_notifications
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]

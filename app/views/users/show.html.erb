@@ -2,7 +2,8 @@
 <%= @user.name %>
 <%# option to show email depending on user settings %>
 <div id="add-friend-button">
-  <% unless user_is_self?(@user.id) || current_user.friend?(@user) %>
+  <% unless current_user.user_is_self?(@user.id) ||
+            current_user.friendship_already_exists?(@user.id) %>
     <%= button_to 'Add Friend', friendships_path(friend_id: @user.id) %>
   <% end %>
 </div>

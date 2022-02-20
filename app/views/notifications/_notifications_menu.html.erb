@@ -1,0 +1,11 @@
+<% @notifications.each do |n| %>
+  <% content = notification_content(n) %>
+  <div class="notification">
+    <%= link_to content[:url] do %>
+      <%= content[:message] %>
+    <% end %>
+  </div>
+<% end %>
+<%# update seen status when clicking or seeing notification %>
+
+<%== pagy_nav(@pagy_n) %>

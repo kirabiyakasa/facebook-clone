@@ -11,6 +11,7 @@ class User < ApplicationRecord
            :foreign_key => "friend_id"
   has_many :posts
   has_many :likes
+  has_many :notifications
 
   def friends
     friend_ids = friendships.map{
@@ -46,6 +47,17 @@ class User < ApplicationRecord
 
   def friend?(user)
     friends.include?(user)
+  end
+
+  def user_is_self?(user_id)
+    self.id == user_id
+  end
+
+  def friendship_already_exists?(user_id)
+    if friendships.find_by(friend_id: user_id) ||
+       inverse_friendships.find_by(user_id: user_id)
+      return true
+    end
   end
 
 end
