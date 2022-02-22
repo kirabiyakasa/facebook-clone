@@ -3,9 +3,11 @@
     <div class="post">
       <div class="post-header">
         <div class="post-user">
+          <%# condition to check if user exists %>
           <%= link_to post.user do %>
             <%= post.user.name %>
           <% end %>
+          <%# end %>
         </div>
         <div class="post-date">
           <%= post.created_at %>

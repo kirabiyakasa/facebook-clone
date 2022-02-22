@@ -8,4 +8,4 @@
 <% end %>
 <%# update seen status when clicking or seeing notification %>
 
-<%== pagy_nav(@pagy_n) %>
+<%== pagy_nav(@pagy_n) if @pagy_n.pages > 1 %>

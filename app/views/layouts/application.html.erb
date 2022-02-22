@@ -12,6 +12,7 @@
   <body>
     <nav id="navbar">
       <% if user_signed_in? %>
+      <%# switch this with a variable from a before action %>
 
         <div class="nav-sub-container">
           <%= link_to(:root) do %>
@@ -55,6 +56,11 @@
         <%# alternative top bar %>
       <% end %>
     </nav>
+
+    <div id="top-bar">
+      <%= yield :top_bar %>
+      <%= render 'posts/posts_form' if @can_post %>
+    </div>
 
     <%= yield %>
   </body>

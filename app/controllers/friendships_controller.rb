@@ -23,6 +23,7 @@ class FriendshipsController < ApplicationController
     head(403) if recevied_request? == false || @friendship.confirmed
     @friendship.update(confirmed: true)
   end
+  # remove notification
 
   def cancel
     @friendship = Friendship.find(params[:id])
@@ -30,6 +31,7 @@ class FriendshipsController < ApplicationController
     head(403) if sent_request? == false || @friendship.confirmed
     @friendship.destroy
   end
+  # remove notification
 
   def remove
     @friendship = Friendship.find(params[:id])
@@ -39,6 +41,7 @@ class FriendshipsController < ApplicationController
       @friendship.destroy
     end
   end
+  # remove notification
 
   private
 

@@ -1,6 +1,11 @@
-<%= image_tag @user.gravatar_url %>
-<%= @user.name %>
-<%# option to show email depending on user settings %>
+<%= content_for :top_bar do %>
+  <div id="user-profile">
+    <div id="profile-pic"><%= image_tag @user.gravatar_url %></div>
+    <div id="profile-name"><%= @user.name %></div>
+    <%# option to show email depending on user settings %>
+  </div>
+<% end %>
+
 <div id="add-friend-button">
   <% unless current_user.user_is_self?(@user.id) ||
             current_user.friendship_already_exists?(@user.id) %>

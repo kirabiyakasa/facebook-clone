@@ -18,6 +18,25 @@ class ApplicationController < ActionController::Base
   end
 
   def get_notifications
-    @pagy_n, @notifications = pagy current_user.notifications
+    @pagy_n,
+    @notifications = pagy(current_user.notifications
+                                      .includes(:notifiable), 
+                          items: 10, page_param: :n_page)
+    preload_notifiable_user
   end
+
+  def allow_posting
+    @can_post = true
+  end
+
+  private
+
+  def preload_notifiable_user
+    preloader = ActiveRecord::Associations::Preloader.new
+    preloader.preload(
+      @notifications.select { |p| p.notifiable_type == 'Friendship' },
+      notifiable: [:user]
+    )
+  end
+
 end

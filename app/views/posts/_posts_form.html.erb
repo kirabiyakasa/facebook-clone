@@ -1,0 +1,5 @@
+<%= form_with url: '/posts', :html => { class: 'new-post' }, method: 'post' do |f| %>
+  <%= image_tag current_user.gravatar_url, height: '40px' %>
+  <%= f.text_area :body, class: 'text-field'%>
+  <%= f.submit 'Create Post'%>
+<% end %>

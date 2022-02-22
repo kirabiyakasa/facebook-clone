@@ -1,5 +1,5 @@
 class Post < ApplicationRecord
-  belongs_to :user
+  belongs_to :user #dependent destroy?
   has_many :notifications, as: :notifiable 
 
   has_many :likes, -> { liked }, class_name: 'Like'
