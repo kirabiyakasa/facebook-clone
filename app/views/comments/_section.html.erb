@@ -1,0 +1,70 @@
+<% @comments.each do |comment| %>
+  <div class="comment-chain">
+    <div class="comment"><%# first in chain %>
+      <div class="comment-main">
+        <div class="comment-header">
+          <div class="comment-user">
+            <%# condition to check if user exists %>
+            <%= link_to comment.user do %>
+              <%= comment.user.name %>
+            <% end %>
+            <%# end %>
+          </div>
+          <div class="comment-date">
+            <%= comment.created_at %>
+            <%= comment.id %>
+          </div>
+        </div>
+        <div class="comment-body">
+          <%= comment.body %>
+        </div>
+      </div>
+      <div class="comment-sub">
+        <div class="likes-dislikes">
+          <div class="likes">
+            <%= comment.likes.length %>
+          </div>
+          <div class="dislikes">
+            <%= comment.dislikes.length %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% comment.replies.order(created_at: 'ASC')
+                      .includes(:likes, :dislikes, :user)
+                      .each do |reply| %>
+      <div class="comment-reply">
+        <div class="comment-main">
+          <div class="comment-header">
+            <div class="comment-user">
+              <%# condition to check if user exists %>
+              <%= link_to reply.user do %>
+                <%= reply.user.name %>
+              <% end %>
+              <%# end %>
+            </div>
+            <div class="comment-date">
+              <%= reply.created_at %>
+              <%= reply.id %>
+            </div>
+          </div>
+          <div class="comment-body">
+            <%= reply.body %>
+          </div>
+        </div>
+        <div class="comment-sub">
+          <div class="likes-dislikes">
+            <div class="likes">
+              <%= reply.likes.length %>
+            </div>
+            <div class="dislikes">
+              <%= reply.dislikes.length %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<%# simplify with helpers %>

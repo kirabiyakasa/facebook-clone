@@ -12,6 +12,12 @@
   margin: 10px;
 }
 
+.post-sub {
+  background-color: aliceblue;
+  display: flex;
+  justify-content: space-between;
+}
+
 .post-header {
   background-color: darkgrey;
   display: flex;
@@ -28,6 +34,60 @@
   padding: 3px;
 }
 
+.comments-indicator {
+  background-color: blueviolet;
+  display: flex;
+  align-items: center;
+}
+
 .likes {
   margin-right: 10px;
+}
+
+.reply-bar {
+  margin: auto;
+}
+
+.reply-sub-container {
+  display: flex;
+  align-items: center;
+}
+
+.reply-bar .reply-gravatar {
+  height: 32px;
+  margin-right: 10px;
+}
+
+.reply-bar .reply-field {
+  height: 36px;
+}
+
+.post-options {
+  display: flex;
+  justify-content: space-around;
+}
+
+.post-options :first-child {
+  background-color: red;
+  width: 100%;
+  text-align: center;
+}
+
+.post-options :last-child {
+  background-color: green;
+  width: 100%;
+  text-align: center;
+}
+
+/* comments */
+
+.comment, .comment-reply {
+  color: black;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 1px;
+}
+
+.comment-reply {
+  margin-left: 30px;
 }

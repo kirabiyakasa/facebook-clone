@@ -1,5 +1,9 @@
 <%= form_with url: '/posts', :html => { class: 'new-post' }, method: 'post' do |f| %>
-  <%= image_tag current_user.gravatar_url, height: '40px' %>
-  <%= f.text_area :body, class: 'text-field'%>
+  <div class="reply-sub-container">
+    <%= image_tag current_user.gravatar_url, height: '40px',
+                                             class: 'reply-gravatar' %>
+    <%= f.text_area :body, class: 'reply-field'%>
+  </div>
   <%= f.submit 'Create Post'%>
 <% end %>
+<%# render reply form inline? %>

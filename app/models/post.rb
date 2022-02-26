@@ -1,7 +1,10 @@
 class Post < ApplicationRecord
   belongs_to :user #dependent destroy?
-  has_many :notifications, as: :notifiable 
+  has_one :notification, as: :notifiable, dependent: :destroy
 
-  has_many :likes, -> { liked }, class_name: 'Like'
-  has_many :dislikes, -> { disliked }, class_name: 'Like'
+  has_many :comments, -> { commented }, dependent: :destroy
+  has_many :replies, -> { replied }, class_name: 'Comment'
+
+  has_many :likes, -> { liked }, as: :likable, class_name: 'Like'
+  has_many :dislikes, -> { disliked }, as: :likable, class_name: 'Like'
 end

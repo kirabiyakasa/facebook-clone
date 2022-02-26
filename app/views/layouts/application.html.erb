@@ -10,58 +10,20 @@
   </head>
 
   <body>
-    <nav id="navbar">
-      <% if user_signed_in? %>
+    <% if user_signed_in? %>
       <%# switch this with a variable from a before action %>
+      <%= render 'layouts/navbar' %>
+    <% else %>
+      <%# alternative top bar %>
+    <% end %>
 
-        <div class="nav-sub-container">
-          <%= link_to(:root) do %>
-            <div id="home-button">HOME</div>
-          <% end %>
-        </div>
-
-        <div class="nav-sub-container">
-          <div id="logo">LOGO</div>
-          <%# center image %>
-        </div>
-
-        <div class="nav-sub-container">
-          <%= link_to (current_user), id: 'user-icon' do %>
-            <%= image_tag current_user.gravatar_url, :class => "gravatar" %>
-          <% end %>
-
-          <div id="notifications-dropdown-menu">
-            <button id="notifications-dropbtn">N-ICON</button>
-            <menu id="notifications-menu-content">
-              <%= render 'notifications/notifications_menu' %>
-            </menu>
-          </div>
-          <%# when clicking, open notifications menu %>
-          <%# update in real time%>
-          <%# if post, say new post, if like, say new like %>
-          <%# arrange by time, arrange likes in groups %>
-          <div id="user-dropdown-menu">
-            <button id="user-dropbtn">MENU</button>
-            <menu id="user-menu-content">
-              <%= link_to 'Friends', friendships_path %>
-              <%= link_to 'Sign Out', destroy_user_session_path, method: 'delete' %>
-            <%# display name at top of menu, below user icon %>
-            <%# settings option in menu %>
-            <%# clicking anywhere other than in the menu will close menu %>
-            </menu>
-          </div>
-        </div>
-
-      <% else %>
-        <%# alternative top bar %>
-      <% end %>
-    </nav>
-
-    <div id="top-bar">
-      <%= yield :top_bar %>
+    <div id="top-content">
+      <%= yield :top_content %>
       <%= render 'posts/posts_form' if @can_post %>
     </div>
 
-    <%= yield %>
+    <div id="center-content">
+      <%= yield %>
+    </div>
   </body>
 </html>

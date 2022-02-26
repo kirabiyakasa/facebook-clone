@@ -1,6 +1,8 @@
 class FriendshipsController < ApplicationController
   before_action :valid_friend_request?, only: [:create]
   after_action :new_friend_notification, only: [:create]
+  after_action :delete_friend_notification, only: [:accept]
+
 
   def index
     @user = current_user
@@ -23,7 +25,6 @@ class FriendshipsController < ApplicationController
     head(403) if recevied_request? == false || @friendship.confirmed
     @friendship.update(confirmed: true)
   end
-  # remove notification
 
   def cancel
     @friendship = Friendship.find(params[:id])
@@ -31,7 +32,6 @@ class FriendshipsController < ApplicationController
     head(403) if sent_request? == false || @friendship.confirmed
     @friendship.destroy
   end
-  # remove notification
 
   def remove
     @friendship = Friendship.find(params[:id])
@@ -41,7 +41,6 @@ class FriendshipsController < ApplicationController
       @friendship.destroy
     end
   end
-  # remove notification
 
   private
 
@@ -69,6 +68,10 @@ class FriendshipsController < ApplicationController
     type = 'Friendship'
     notifiable_id = @friendship.id
     create_notification(friend_id, type, notifiable_id)
+  end
+
+  def delete_friend_notification
+    @friendship.notification.destroy
   end
 
 end

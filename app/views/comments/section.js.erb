@@ -1,0 +1,4 @@
+comment_section = document.querySelector(
+  `[data-comment-section-id="<%= @post_id %>"]`)
+
+comment_section.innerHTML = '<%= j render ("section") %>'
