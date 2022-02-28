@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
                             .includes(:likes, :dislikes, :user, :replies,
                                       # nested replies associations
                                       {replies: [:user, :likes, :dislikes]}
-                            ), items: 15)
+                    ), items: 15)
   end
 
 end

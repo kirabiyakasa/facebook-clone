@@ -1,70 +1,94 @@
-<% @comments.each do |comment| %>
-  <div class="comment-chain">
-    <div class="comment"><%# first in chain %>
-      <div class="comment-main">
-        <div class="comment-header">
-          <div class="comment-user">
-            <%# condition to check if user exists %>
-            <%= link_to comment.user do %>
-              <%= comment.user.name %>
-            <% end %>
-            <%# end %>
-          </div>
-          <div class="comment-date">
-            <%= comment.created_at %>
-            <%= comment.id %>
-          </div>
-        </div>
-        <div class="comment-body">
-          <%= comment.body %>
-        </div>
-      </div>
-      <div class="comment-sub">
-        <div class="likes-dislikes">
-          <div class="likes">
-            <%= comment.likes.length %>
-          </div>
-          <div class="dislikes">
-            <%= comment.dislikes.length %>
-          </div>
-        </div>
-      </div>
-    </div>
+<% offset = get_offset %>
 
-    <% comment.replies.order(created_at: 'ASC')
-                      .includes(:likes, :dislikes, :user)
-                      .each do |reply| %>
-      <div class="comment-reply">
-        <div class="comment-main">
+<% (@comments.length - offset).times do |i| %>
+  <div class="comment-chain">
+    <div class="comment">
+      <div class="comment-main">
+        <div class="comment-top">
           <div class="comment-header">
             <div class="comment-user">
               <%# condition to check if user exists %>
-              <%= link_to reply.user do %>
-                <%= reply.user.name %>
+              <%= link_to @comments[i].user do %>
+                <%= @comments[i].user.name %>
               <% end %>
               <%# end %>
             </div>
             <div class="comment-date">
-              <%= reply.created_at %>
-              <%= reply.id %>
+              <%= @comments[i].created_at %>
+              <%= @comments[i].id %>
             </div>
           </div>
           <div class="comment-body">
-            <%= reply.body %>
+            <%= @comments[i].body %>
           </div>
         </div>
-        <div class="comment-sub">
+        <div class="comment-bottom">
           <div class="likes-dislikes">
             <div class="likes">
-              <%= reply.likes.length %>
+              <%= @comments[i].likes.length %>
             </div>
             <div class="dislikes">
-              <%= reply.dislikes.length %>
+              <%= @comments[i].dislikes.length %>
             </div>
           </div>
         </div>
       </div>
+      <%= comment_options %>
+    </div>
+
+    <%# sort replies here and add pagy %>
+    <% if @posts %>
+      <div class="replies-container" style="display:none">
+    <% else %>
+      <div class="replies-container">
+    <% end %>
+    <% @comments[i].replies.order(created_at: 'ASC')
+                           .includes(:likes, :dislikes, :user)
+                           .each do |reply| %>
+        <div class="comment-reply">
+          <div class="comment-main">
+            <div class="comment-top">
+              <div class="comment-header">
+                <div class="comment-user">
+                  <%# condition to check if user exists %>
+                  <%= link_to reply.user do %>
+                    <%= reply.user.name %>
+                  <% end %>
+                  <%# end %>
+                </div>
+                <div class="comment-date">
+                  <%= reply.created_at %>
+                  <%= reply.id %>
+                </div>
+              </div>
+              <div class="comment-body">
+                <%= reply.body %>
+              </div>
+            </div>
+            <div class="comment-bottom">
+              <div class="likes-dislikes">
+                <div class="likes">
+                  <%= reply.likes.length %>
+                </div>
+                <div class="dislikes">
+                  <%= reply.dislikes.length %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%= comment_options %>
+        </div>
+
+    <% end %>
+      </div>
+    <% if @posts %>
+      <div class="show-replies">
+        <% unless @comments[i].replies.none? %>
+          <%= "#{@comments[i].replies.last.user.name} replied" %>
+          <%= " · " %>
+          <%= reply_count_message(@comments[i].replies, i) %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 <% end %>
-<%# simplify with helpers %>

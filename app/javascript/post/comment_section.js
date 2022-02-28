@@ -1,5 +1,9 @@
 document.addEventListener("turbolinks:load", function() {
+  loadToggleCommentsEvents()
+  loadShowRepliesEvents()
+});
 
+function loadToggleCommentsEvents() {
   let commentsIndicators = document.querySelectorAll('.comments-indicator');
 
   commentsIndicators.forEach( commentsIndicator => {
@@ -14,4 +18,19 @@ document.addEventListener("turbolinks:load", function() {
       }
     });
   });
-});
+};
+
+function loadShowRepliesEvents() {
+  repliesPreview = document.querySelectorAll('.show-replies')
+
+  repliesPreview.forEach( preview => {
+    preview.addEventListener('click', (event) => {
+      let repliesContainer = event.target.parentNode.querySelector(
+        '.replies-container');
+      event.target.remove()
+      if (repliesContainer.style.display == 'none') {
+        repliesContainer.style.display = 'block'
+      }
+    });
+  });
+};

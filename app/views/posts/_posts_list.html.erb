@@ -41,18 +41,13 @@
       </div>
 
       <section id="comment-section" data-comment-section-id="<%= post.id %>">
-        <% if post.comments.any? %>
-          <%= link_to "View #{post.comments.length} previous comments",
+        <% if post.comments.length > 1 %>
+          <%= link_to "View #{post.comments.length - 1} previous comments",
               section_post_comments_path(post.id), remote: true %>
-              <% comment = post.comments.sort_by{
-                  |comment| comment.created_at
-                }.last
-              %>
-              <%# preview comment %>
-                <%= comment.created_at %>
-                <%= comment.body %>
-              <%# preview comment end%>
-              <%= "#{comment.replies.length} Replies" %>
+        <% end %>
+        <% if post.comments.any?%>
+          <% @comments = preview_comment(post.comments) %>
+          <%= render 'comments/section' %>
         <% end %>
       </section>
 

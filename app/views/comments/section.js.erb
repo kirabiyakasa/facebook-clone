@@ -1,4 +1,12 @@
-comment_section = document.querySelector(
-  `[data-comment-section-id="<%= @post_id %>"]`)
+var commentSection = document.querySelector(
+  `[data-comment-section-id="<%= @post_id %>"]`);
 
-comment_section.innerHTML = '<%= j render ("section") %>'
+var comments = commentSection.querySelectorAll('.comment-chain');
+
+if (comments.length === 1) {
+  let firstComment = comments[0];
+  firstComment.querySelector('.show-replies').remove()
+  firstComment.querySelector('.replies-container').style.display = '';
+  commentSection.querySelector('a').remove()
+  commentSection.insertAdjacentHTML('afterbegin', '<%= j render ("section") %>')
+}

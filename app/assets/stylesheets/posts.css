@@ -78,16 +78,3 @@
   width: 100%;
   text-align: center;
 }
-
-/* comments */
-
-.comment, .comment-reply {
-  color: black;
-  border-style: solid;
-  border-width: 1px;
-  margin-bottom: 1px;
-}
-
-.comment-reply {
-  margin-left: 30px;
-}
