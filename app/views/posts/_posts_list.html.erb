@@ -1,15 +1,13 @@
 <div id="posts-container">
   <% @posts.each do |post| %>
-    <div class="post">
+    <div class="post" data-controller="posts">
 
       <div class="post-main">
         <div class="post-header">
           <div class="post-user">
-            <%# condition to check if user exists %>
             <%= link_to post.user do %>
               <%= post.user.name %>
             <% end %>
-            <%# end %>
           </div>
           <div class="post-date">
             <%= post.created_at %>
@@ -29,7 +27,7 @@
             <%= post.dislikes.length %>
           </div>
         </div>
-        <div class="comments-indicator" data-comments-indicator-id="<%= post.id %>">
+        <div class="comments-indicator" data-action="click->posts#toggleComments">
           <% if post.comments.any? %>
             <%= "#{post.comments.length + post.replies.length} Comments" %>
           <% end%>
@@ -40,10 +38,14 @@
         <span>Comment</span><span>Share</span>
       </div>
 
-      <section id="comment-section" data-comment-section-id="<%= post.id %>">
+      <section class="comment-section" data-comment-section-id="<%= post.id %>">
+        <% unloaded_comments_count = post.comments.length - 1 %>
         <% if post.comments.length > 1 %>
-          <%= link_to "View #{post.comments.length - 1} previous comments",
-              section_post_comments_path(post.id), remote: true %>
+          <%= link_to "View #{unloaded_comments_count} previous comments",
+              section_post_comments_path(post_id: post.id,
+              comment_count: unloaded_comments_count), class: 'show-comments',
+              data: {comment_count: unloaded_comments_count}, remote: true
+          %>
         <% end %>
         <% if post.comments.any?%>
           <% @comments = preview_comment(post.comments) %>
@@ -52,9 +54,14 @@
       </section>
 
       <div class="reply-bar">
-        <%= form_with url: "/posts/#{post.id}/comment", method: 'post' do |f| %>
-          <%= f.text_area :body %>
-          <%= f.submit 'Submit Comment' %>
+        <%= form_with url: "posts/#{post.id}/comments", method: 'post' do |f| %>
+          <%= f.text_area :body, placeholder: 'Write a comment...',
+              data: {action: 'keyup->posts#submit',
+                     posts_target: 'form-field'}
+          %>
+          <%= f.submit 'Submit Comment', style: 'display:none;',
+              data: { posts_target: 'submit-button' }
+          %>
         <% end %>
       </div>
 

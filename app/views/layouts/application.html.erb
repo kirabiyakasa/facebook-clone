@@ -23,6 +23,7 @@
     </div>
 
     <div id="center-content">
+      <%= query_diet_widget if Rails.env.development? %>
       <%= yield %>
     </div>
   </body>

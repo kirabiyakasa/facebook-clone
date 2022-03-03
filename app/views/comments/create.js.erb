@@ -1,0 +1,13 @@
+var comment = '<%= j render ("section") %>'
+
+<% if @comment.comment_id %>
+  var commentChain = document.querySelector(
+    '[data-chain-id="<%= @comment.comment_id %>"]')
+
+  commentChain.querySelector('.replies-container')
+              .insertAdjacentHTML('beforeend', comment)
+<% else %>
+  var commentSection = document.querySelector(
+    '[data-comment-section-id="<%= @comment.post_id %>"]')
+  commentSection.insertAdjacentHTML('beforeend', comment)
+<% end %>

@@ -7,7 +7,11 @@ class PostsController < ApplicationController
     @posts = pagy(Post.where(user_id: user_ids)
                       .order('created_at DESC')
                       .includes(:likes, :dislikes, :user, :comments, :replies,
-                  ), items: 15)
+                               # nested comments associations
+                               {comments: [:user, :likes, :dislikes, :replies,
+                               # nested replies associations
+                               {replies: [:user, :likes, :dislikes]}]}
+                  ), items: 10)
   end
 
   def create

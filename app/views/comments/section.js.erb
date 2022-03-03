@@ -3,10 +3,7 @@ var commentSection = document.querySelector(
 
 var comments = commentSection.querySelectorAll('.comment-chain');
 
-if (comments.length === 1) {
-  let firstComment = comments[0];
-  firstComment.querySelector('.show-replies').remove()
-  firstComment.querySelector('.replies-container').style.display = '';
+if (comments.length > 0) {
   commentSection.querySelector('a').remove()
   commentSection.insertAdjacentHTML('afterbegin', '<%= j render ("section") %>')
 }

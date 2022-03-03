@@ -60,3 +60,5 @@ gem 'faker'
 gem 'pagy', '= 5.10.1'
 
 gem 'gravtastic'
+
+gem 'query_diet', group: :development
