@@ -12,24 +12,17 @@ class CommentsController < ApplicationController
   end
 
   def create
-    user_id = current_user.id
-    post_id = params[:post_id]
-    if comment_params
-      body = comment_params[:body]
+    @comment = Comment.new(user_id: current_user.id, post_id: params[:post_id],
+                           body: params[:body])
+    if params[:comment_id]
+      @comment.comment_id = params[:comment_id]
+      @appending_reply = true
     else
-      body = params[:body]
+      @appending_comment = true
     end
-    @comment = Comment.new(user_id: user_id, post_id: post_id, body: body)
-    if comment_params
-      @comment.comment_id = comment_params[:comment_id]
-    end
+
     if @comment.save
       @comments = [@comment]
-      if @comment.comment_id
-        @appending_reply = true
-      else
-        @appending_comment = true
-      end
     else
       head(404)
     end

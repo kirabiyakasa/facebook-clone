@@ -27,31 +27,38 @@
         </div>
         <div class="comment-bottom">
           <div class="likes-dislikes">
-            <div class="likes">
-              <%= comment.likes.length %>
+            <div>
+              <%= link_to likes_path(liked: true, likable_id: comment.id,
+                  likable_type: 'Comment'), class: 'likes', method: 'post' do
+              %>
+                <i class='fa fa-thumbs-up'></i>
+              <% end %>
+              <span class="likes-count"><%= comment.likes.length %></span>
             </div>
-            <div class="dislikes">
-              <%= comment.dislikes.length %>
+            <div>
+              <%= link_to likes_path(liked: false, likable_id: comment.id,
+                  likable_type: 'Comment'), class: 'dislikes', method: 'post' do
+              %>
+                <i class='fa fa-thumbs-down'></i>
+              <% end %>
+              <span class="dislikes-count"><%= comment.dislikes.length %></span>
             </div>
-            <%# program likes and dislikes%>
           </div>
         </div>
       </div>
-      <%= form_with url: post_comments_path(post_id: comment.post_id),
+      <%= form_with url: comments_path(post_id: comment.post_id),
           html: {class: 'reply-form', style: 'display:none;',
           data: {comments_controller: 'reply-form'}} do |f|
       %>
-        <%= f.fields_for :comments do |comment_field| %>
-          <% comment_id = parent_comment_id(comment) %>
-          <%= comment_field.hidden_field :comment_id, value: comment_id %>
-          <%= comment_field.text_area :body, placeholder: 'Write a reply...',
+        <% comment_id = parent_comment_id(comment) %>
+        <%= f.hidden_field :comment_id, value: comment_id%>
+        <%= f.text_area :body, placeholder: 'Write a reply...',
               data: {action: 'keyup->comments#submit',
                      comments_target: 'form-field'}
-          %>
-          <%= comment_field.submit 'Submit', style: 'display:none;',
+        %>
+        <%= f.submit 'Submit', style: 'display:none;',
               data: {comments_target: 'submit-button'}
-          %>
-        <% end %>
+        %>
       <% end %>
       <%= comment_options %>
     </div>

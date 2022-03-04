@@ -20,11 +20,21 @@
 
       <div class="post-sub">
         <div class="likes-dislikes">
-          <div class="likes">
-            <%= post.likes.length %>
+          <div>
+            <%= link_to likes_path(liked: true, likable_id: post.id,
+                likable_type: 'Post'), class: 'likes', method: 'post' do
+            %>
+              <i class='fa fa-thumbs-up'></i>
+            <% end %>
+            <span class="likes-count"><%= post.likes.length %></span>
           </div>
-          <div class="dislikes">
-            <%= post.dislikes.length %>
+          <div>
+            <%= link_to likes_path(liked: false, likable_id: post.id,
+                likable_type: 'Post'), class: 'dislikes', method: 'post' do
+            %>
+              <i class='fa fa-thumbs-down'></i>
+            <% end %>
+            <span class="dislikes-count"><%= post.dislikes.length %></span>
           </div>
         </div>
         <div class="comments-indicator" data-action="click->posts#toggleComments">
@@ -42,7 +52,7 @@
         <% unloaded_comments_count = post.comments.length - 1 %>
         <% if post.comments.length > 1 %>
           <%= link_to "View #{unloaded_comments_count} previous comments",
-              section_post_comments_path(post_id: post.id,
+              section_comments_path(post_id: post.id,
               comment_count: unloaded_comments_count), class: 'show-comments',
               data: {comment_count: unloaded_comments_count}, remote: true
           %>
@@ -54,7 +64,7 @@
       </section>
 
       <div class="reply-bar">
-        <%= form_with url: "posts/#{post.id}/comments", method: 'post' do |f| %>
+        <%= form_with url: comments_path(post_id: post.id) do |f| %>
           <%= f.text_area :body, placeholder: 'Write a comment...',
               data: {action: 'keyup->posts#submit',
                      posts_target: 'form-field'}

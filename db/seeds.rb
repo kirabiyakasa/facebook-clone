@@ -11,9 +11,17 @@
               password: "abc123")
 end
 
-friendship1 = User.find(2).friendships.build(friend_id: 3, confirmed: true)
-friendship1.save
+f1 = User.find(2).friendships.build(friend_id: 3, confirmed: true)
+f2 = User.find(3).friendships.build(friend_id: 10, confirmed: true)
+f3 = User.find(4).friendships.build(friend_id: 4, confirmed: false)
 
+[f1, f2, f3].each do |f|
+  f.save
+end
+
+notification = Notification.create(user_id: f3.friend_id,
+                                   notifiable_type: f3.notifiable_type
+                                   notifiable_id: f3.notifiable_id)
 user_count = User.all.length
 
 200.times do
@@ -40,31 +48,3 @@ comment_count = Comment.all.length
                                 body: reply_body)
   reply.save
 end
-
-#post_count = Post.all.length
-#1000.times do
-#  user_id = rand(1..user_count)
-#  post_body = FAKER::Lorem.paragraph
-#  type = "Post"
-#  commentable_id = rand(1..post_count)
-#  Post.create()
-#end
-
-#new_post_count = Post.all.length
-#1000.times do
-#  user_id = rand(1..user_count)
-#  post_body = FAKER::Lorem.paragraph
-#  type = "Post"
-#  commentable_id = rand((post_count + 1)..new_post_count)
-#  sibling_posts = Post.find(commentable_id).comments
-#  sibling_post_count = Post.find(commentable_id).comments.length
-#  sibling_post = nil
-#  unless rand(5) == < 2
-#    if sibling_posts.any?
-#      sibling_post = sibling_posts[rand(0..sibling_post_count)]
-#      post_body = "@#{sibling_post.user.name} #{post_body}"
-#    end
-#  end
-#  Post.create(user_id: user_id, body: post_body,
-#              commentable_type: type, commentable_id: commentable_id)
-#end

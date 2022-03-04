@@ -7,11 +7,11 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
   </head>
 
   <body>
     <% if user_signed_in? %>
-      <%# switch this with a variable from a before action %>
       <%= render 'layouts/navbar' %>
     <% else %>
       <%# alternative top bar %>
@@ -23,7 +23,7 @@
     </div>
 
     <div id="center-content">
-      <%= query_diet_widget if Rails.env.development? %>
+      <%= query_diet_widget(bad_count: 30, bad_time: 100) if Rails.env.development? %>
       <%= yield %>
     </div>
   </body>

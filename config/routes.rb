@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :users, only: [:show]
   resources :posts, only: [:index, :create] do
-    resources :comments, only: [:create] do
-      get :section, on: :collection
-    end
+  end
+  resources :comments, only: [:create] do
+    get :section, on: :collection
   end
   resources :friendships, only: [:index, :create] do
     member do
@@ -20,4 +20,5 @@ Rails.application.routes.draw do
     end
   end
   resources :notifications, only: [:index]
+  resources :likes, only: [:create]
 end

@@ -19,14 +19,6 @@ body {
   margin: 0;
 }
 
-/* vertically center content in navbar
-#user-menu-container, #user-icon, #notifications, #home-button { 
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-}
-*/
-
 #navbar {
   background-color: blueviolet;
   display: flex;

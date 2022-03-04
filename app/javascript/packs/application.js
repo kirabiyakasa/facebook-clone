@@ -17,7 +17,11 @@ require("channels")
 
 import { Application } from '@hotwired/stimulus'
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 window.Stimulus = Application.start()
 const context = require.context('./controllers', true, /\.js$/)
 Stimulus.load(definitionsFromContext(context))
+
+library.add(fas)

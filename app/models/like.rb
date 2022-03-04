@@ -5,4 +5,8 @@ class Like < ApplicationRecord
 
   scope :liked, -> { where liked: true }
   scope :disliked, -> { where liked: false }
+
+  validates :likable_id, uniqueness: {
+    :scope => [:likable_id, :likable_type]
+  }
 end

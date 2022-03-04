@@ -27,8 +27,6 @@ export default class extends Controller {
   };
 
   expandReplies() {
-    console.log(this.commentChain)
-
     let repliesContainer = this.commentChain.querySelector('.replies-container');
     let showRepliesButton = this.commentChain.querySelector('.show-replies');
 
@@ -46,7 +44,6 @@ export default class extends Controller {
     replyForm.style.display = ''
   };
 };
-// event for submitting form data with enter
 
 // show more replies
 
