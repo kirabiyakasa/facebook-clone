@@ -43,7 +43,18 @@ export default class extends Controller {
     let replyForm = this.element.querySelector('.reply-form')
     replyForm.style.display = ''
   };
+
+  toggleLikes() {
+    // get the "highlighted" value of the clicked button
+    // remove highlight from both buttons
+    // check the "highlighted" value
+    // if value was false, apply highlight to the clicked button
+    // else, do nothing
+  }
 };
+
+// likes and dislikes events
+//allow posts to inherit
 
 // show more replies
 

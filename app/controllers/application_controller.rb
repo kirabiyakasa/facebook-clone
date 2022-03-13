@@ -26,7 +26,13 @@ class ApplicationController < ActionController::Base
   end
 
   def allow_posting
-    @can_post = true
+    if params[:id]
+      if params[:id] == current_user.id
+        @can_post = true
+      end
+    else
+      @can_post = true
+    end
   end
 
   private
