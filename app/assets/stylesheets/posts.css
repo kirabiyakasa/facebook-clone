@@ -75,18 +75,30 @@
   text-align: center;
 }
 
-.likes, .likes:link, .likes:visited,
-.dislikes, .dislikes:link, .dislikes:visited {
+.likes, .dislikes {
+  display: flex;
+}
+
+.like-button, .dislike-button {
+  all: unset;
+}
+
+.like-button:hover, .dislike-button:hover {
+  cursor: pointer;
+}
+
+.like-button, .like-button:link, .like-button:visited,
+.dislike-button, .dislike-button:link, .dislike-button:visited {
   text-decoration: none;
   color: initial;
 }
 
 .dislikes {
-  margin-left: 5px;
+  margin-left: 12px;
 }
 
 .likes-count, .dislikes-count {
-  margin-left: 5px;
+  margin-left: 8px;
   margin-right: 10px;
 }
 

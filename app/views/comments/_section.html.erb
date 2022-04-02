@@ -1,11 +1,19 @@
 <% offset = get_offset %>
 
-<% (@comments.length - offset).times do |i| %>
+<%# load previous comments %>
+<% unless @appending_comment || @appending_reply %>
+  <% if @pagy_c %>
+    <%== pagy_nav(@pagy_c)%>
+  <% end %>
+<% end %>
+
+<% comments = @comments.reverse %>
+<% (comments.length - offset).times do |i| %>
   <% j = 0 %>
   <% unless @appending_reply %>
-    <div class="comment-chain" data-chain-id="<%= @comments[i].id %>">
+    <div class="comment-chain" data-chain-id="<%= comments[i].id %>">
   <% end %>
-  <% merged_comments = merge_comments(@comments[i]) %>
+  <% merged_comments = merge_comments(comments[i]) %>
   <% merged_comments.each do |comment| %>
     <div class="comment" data-controller="comments">
       <div class="comment-main">
@@ -26,18 +34,20 @@
           </div>
         </div>
         <div class="comment-bottom">
-          <div class="likes-dislikes">
-            <div>
-              <%= link_to likes_path(liked: true, likable_id: comment.id,
-                  likable_type: 'Comment'), class: 'likes', method: 'post' do
+          <%== likes_dislikes_container(comment) %>
+            <div class="likes">
+              <%= button_to likes_path(liked: true, likable_id: comment.id,
+                  likable_type: 'Comment'), class: 'like-button',
+                  method: 'post', data: {action: 'click->comments#like'} do
               %>
                 <i class='fa fa-thumbs-up'></i>
               <% end %>
               <span class="likes-count"><%= comment.likes.length %></span>
             </div>
-            <div>
-              <%= link_to likes_path(liked: false, likable_id: comment.id,
-                  likable_type: 'Comment'), class: 'dislikes', method: 'post' do
+            <div class="dislikes">
+              <%= button_to likes_path(liked: false, likable_id: comment.id,
+                  likable_type: 'Comment'), class: 'dislike-button',
+                  method: 'post', data: {action: 'click->comments#dislike'} do
               %>
                 <i class='fa fa-thumbs-down'></i>
               <% end %>
@@ -68,14 +78,14 @@
     <% end %>
   <% end %>
   <% unless @appending_reply %>
-      </div><%# closes replies container %>
+      </div><%# close replies container %>
   <% end %>
   <% if @posts %>
     <div class="show-replies" data-action="click->posts#expandReplies">
-      <% unless @comments[i].replies.none? %>
-        <%= "#{@comments[i].replies.last.user.name} replied" %>
+      <% unless comments[i].replies.none? %>
+        <%= "#{comments[i].replies.last.user.name} replied" %>
         <%= " · " %>
-        <%= reply_count_message(@comments[i].replies, i) %>
+        <%= reply_count_message(comments[i].replies, i) %>
       <% end %>
     </div>
   <% end %>

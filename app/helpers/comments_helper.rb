@@ -1,8 +1,8 @@
 module CommentsHelper
 
   def get_offset
-    if @comment_count
-      @comments.length - @comment_count
+    if @old_comment_count
+      @new_comment_count - @old_comment_count
     else
       0
     end

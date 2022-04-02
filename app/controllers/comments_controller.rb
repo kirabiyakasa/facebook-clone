@@ -1,10 +1,13 @@
 class CommentsController < ApplicationController
 
   def section
-    @comment_count = params[:comment_count].to_i
+    @old_comment_count = params[:comment_count].to_i
     @post_id = params[:post_id]
-    @pagy, 
+    @new_comment_count = Comment.where(post_id: @post_id,
+                                       comment_id: nil).length
+    @pagy_c, 
     @comments = pagy(Comment.where(post_id: @post_id, comment_id: nil)
+                            .order('created_at DESC')
                             .includes(:likes, :dislikes, :user, :replies,
                                       # nested replies associations
                                       {replies: [:user, :likes, :dislikes]}

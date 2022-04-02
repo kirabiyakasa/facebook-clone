@@ -20,8 +20,8 @@ f3 = User.find(4).friendships.build(friend_id: 4, confirmed: false)
 end
 
 notification = Notification.create(user_id: f3.friend_id,
-                                   notifiable_type: f3.notifiable_type
-                                   notifiable_id: f3.notifiable_id)
+                                   notifiable_type: 'Friendship'
+                                   notifiable_id: f3.id)
 user_count = User.all.length
 
 200.times do
