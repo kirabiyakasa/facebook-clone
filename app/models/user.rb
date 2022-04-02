@@ -15,13 +15,9 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   def friends
-    friend_ids = friendships.map{
-      |friendship| friendship.friend_id if friendship.confirmed
-    }
-    friend_ids += inverse_friendships.map{
-      |friendship| friendship.user_id if friendship.confirmed
-    }
-    User.where(id: friend_ids)
+    friend_ids = friendships.where(confirmed: true).pluck(:friend_id)
+    friend_ids += inverse_friendships.where(confirmed: true).pluck(:user_id)
+    User.where(id: friend_ids).compact
   end
 
   # Users to whom unconfirmed friend requests have been sent
