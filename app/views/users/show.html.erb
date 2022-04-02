@@ -13,7 +13,11 @@
   <% end %>
 </div>
 
-<%= render 'posts/posts_list' %>
+<div id="posts-container"
+     data-controller="infinite-scroll"
+     data-action="scroll@window->infinite-scroll#scroll">
+  <%= render 'posts/posts_list' %>
+</div>
 
 <%# show forum for creating new posts on user's timeline %>
 <%# only allow user to post on their own timeline %>

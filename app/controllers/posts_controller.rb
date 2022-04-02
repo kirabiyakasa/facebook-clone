@@ -11,7 +11,16 @@ class PostsController < ApplicationController
                                {comments: [:user, :likes, :dislikes, :replies,
                                # nested replies associations
                                {replies: [:user, :likes, :dislikes]}]}
-                  ), items: 10)
+                  ), items: 5)
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: {
+          entries: render_to_string(partial: 'posts_list', formats: [:html]),
+          pagination: view_context.pagy_nav(@pagy)
+        }
+      }
+    end
   end
 
   def create

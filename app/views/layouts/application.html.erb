@@ -22,9 +22,9 @@
       <%= render 'posts/posts_form' if @can_post %>
     </div>
 
-    <div id="center-content">
+    <main id="center-content">
       <%= query_diet_widget(bad_count: 30, bad_time: 100) if Rails.env.development? %>
       <%= yield %>
-    </div>
+    </main>
   </body>
 </html>
