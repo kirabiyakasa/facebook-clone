@@ -1,18 +1,18 @@
 import Rails from '@rails/ujs';
-import { Controller } from 'stimulus'
+import { Controller } from 'stimulus';
 
 export default class extends Controller {
-  static targets = ['entries', 'pagination'];
+  static targets = ['entries', 'postsPagination'];
 
   initialize() {
     this.requestCount = 0;
   };
 
   scroll() {
-    let next_page = this.paginationTarget.querySelector('a[rel="next"]')
-    if (next_page == null) { return }
+    let nextPage = this.postsPaginationTarget.querySelector('a[rel="next"]')
+    if (nextPage == null) { return }
 
-    let url = next_page.href
+    let url = nextPage.href;
 
     var body = document.body,
         html = document.documentElement;
@@ -29,13 +29,14 @@ export default class extends Controller {
   loadMore(url) {
     if (this.requestCount == 0) {
       this.requestCount += 1;
+
       Rails.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
         success: (data) => {
           this.entriesTarget.insertAdjacentHTML('beforeend', data.entries);
-          this.paginationTarget.innerHTML = data.pagination;
+          this.postsPaginationTarget.innerHTML = data.postsPagination;
           setTimeout(() => {
             this.requestCount = 0;
           }, 50)

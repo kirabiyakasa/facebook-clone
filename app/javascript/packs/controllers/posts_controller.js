@@ -1,6 +1,9 @@
-import CommentsController from './comments_controller'
+import Rails from '@rails/ujs';
+import CommentsController from './comments_controller';
 
 export default class extends CommentsController {
+  static targets = ['commentSection', 'commentsPagination']
+
   initialize() {
     this.post = this.element
 
@@ -16,6 +19,7 @@ export default class extends CommentsController {
     if (this.firstComment) {
       this.commentChain = this.firstComment.parentElement
     }
+    this.requestCount = 0;
   };
 
   toggleComments() {
@@ -25,6 +29,36 @@ export default class extends CommentsController {
       commentSection.style.display = '';
     } else {
       commentSection.style.display = 'none';
+    }
+  };
+
+  loadMoreComments() {
+    let nextPage = this.commentsPaginationTarget.querySelector('a[rel="next"]');
+    if (nextPage == null) { return }
+
+    let url = nextPage.href;
+
+    this.getComments(url)
+  };
+
+  getComments(url) {
+    if (this.requestCount == 0) {
+      this.requestCount += 1;
+      this.commentSectionTarget.querySelector('.previous-comments-button')
+                               .remove()
+      Rails.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: (data) => {
+          this.commentSectionTarget.insertAdjacentHTML('afterbegin',
+                                                       data.comments)
+          this.commentsPaginationTarget.innerHTML = data.commentsPagination;
+          setTimeout(() => {
+            this.requestCount = 0;
+          }, 50)
+        }
+      })
     }
   };
 

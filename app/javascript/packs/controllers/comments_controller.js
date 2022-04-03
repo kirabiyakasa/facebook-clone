@@ -1,3 +1,4 @@
+import Rails from '@rails/ujs'
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
@@ -12,6 +13,8 @@ export default class extends Controller {
     this.likeColor = 'blue';
     this.dislikeColor = 'red';
     this.setLikesDislikes()
+
+    this.requestCount = 0;
   };
 
   submit(event) {
@@ -124,8 +127,41 @@ export default class extends Controller {
     });
   };
 
+  showMoreReplies() {
+    let moreRepliesAnchor = this.targets.find('repliesPagination');
+    if (moreRepliesAnchor == null) { return }
+
+    let url = moreRepliesAnchor.href
+    this.loadReplies(url, moreRepliesAnchor)
+  }
+
+  loadReplies(url, anchor) {
+    if (this.requestCount == 0) {
+      this.requestCount += 1;
+      anchor.parentElement.remove()
+
+      Rails.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: (data) => {
+          let i = data.loadedRepliesCount - 1;
+
+          let reply = this.comment.querySelectorAll('.comment')[i];
+          reply.insertAdjacentHTML('afterend', data.replies)
+
+          let j = parseInt(i) + parseInt(data.newRepliesCount);
+          reply = this.comment.querySelectorAll('.comment')[j];
+
+          if (data.newRepliesCount == data.repliesPerPage) {
+            reply.insertAdjacentHTML('afterend', data.button)
+          }
+          setTimeout(() => {
+            this.requestCount = 0;
+          }, 50)
+        }
+      })
+    }
+  }
+
 };
-
-// show more replies
-
-// show more comments

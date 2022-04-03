@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
   resources :comments, only: [:create] do
     get :section, on: :collection
+    get :more_replies, on: :member
   end
   resources :friendships, only: [:index, :create] do
     member do

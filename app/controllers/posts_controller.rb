@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :allow_posting, only: [:index, :create]
+  before_action :set_preview_comments_count, only: [:index]
 
   def index
     user_ids = current_user.friends.pluck(:id) << current_user.id
@@ -9,15 +10,16 @@ class PostsController < ApplicationController
                       .includes(:likes, :dislikes, :user, :comments, :replies,
                                # nested comments associations
                                {comments: [:user, :likes, :dislikes, :replies,
+                                :recent_replies,
                                # nested replies associations
-                               {replies: [:user, :likes, :dislikes]}]}
-                  ), items: 5)
+                               {recent_replies: [:user, :likes, :dislikes]}]}),
+                  items: 5)
     respond_to do |format|
       format.html
       format.json {
         render json: {
           entries: render_to_string(partial: 'posts_list', formats: [:html]),
-          pagination: view_context.pagy_nav(@pagy)
+          postsPagination: view_context.pagy_nav(@pagy)
         }
       }
     end

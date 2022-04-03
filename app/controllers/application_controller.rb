@@ -35,6 +35,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_preview_comments_count
+    @preview_comments_count = 1
+  end
+
   private
 
   def preload_notifiable_user

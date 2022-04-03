@@ -1,19 +1,25 @@
-<% offset = get_offset %>
-
-<%# load previous comments %>
-<% unless @appending_comment || @appending_reply %>
+<% unless @appending_single_comment || @appending_single_reply %>
   <% if @pagy_c %>
-    <%== pagy_nav(@pagy_c)%>
+    <div data-posts-target="commentsPagination" style="display:none">
+      <%== pagy_nav(@pagy_c) %>
+    </div>
+    <% unless @pagy_c.page == @pagy_c.last %>
+      <span class="previous-comments-button"
+            data-action="click->posts#loadMoreComments">
+        <%= "Load #{next_comments_count(@pagy_c)} more comments" %>
+      </span>
+    <% end %>
   <% end %>
 <% end %>
 
-<% comments = @comments.reverse %>
-<% (comments.length - offset).times do |i| %>
+<% @replies ? entries = @replies : entries = @comments.reverse %>
+
+<% entries.length.times do |i| %>
   <% j = 0 %>
-  <% unless @appending_reply %>
-    <div class="comment-chain" data-chain-id="<%= comments[i].id %>">
+  <% unless @appending_single_reply || @replies %>
+    <div class="comment-chain" data-chain-id="<%= entries[i].id %>">
   <% end %>
-  <% merged_comments = merge_comments(comments[i]) %>
+  <% merged_comments = merge_comments(entries[i]) %>
   <% merged_comments.each do |comment| %>
     <div class="comment" data-controller="comments">
       <div class="comment-main">
@@ -51,7 +57,9 @@
               %>
                 <i class='fa fa-thumbs-down'></i>
               <% end %>
-              <span class="dislikes-count"><%= comment.dislikes.length %></span>
+              <span class="dislikes-count">
+                <%= comment.dislikes.length %>
+              </span>
             </div>
           </div>
         </div>
@@ -64,30 +72,35 @@
         <%= f.hidden_field :comment_id, value: comment_id%>
         <%= f.text_area :body, placeholder: 'Write a reply...',
               data: {action: 'keyup->comments#submit',
-                     comments_target: 'form-field'}
+                    comments_target: 'form-field'}
         %>
         <%= f.submit 'Submit', style: 'display:none;',
               data: {comments_target: 'submit-button'}
         %>
       <% end %>
       <%= comment_options %>
-    </div>
     <% j += 1%>
-    <% if j == 1 && !@appending_reply %>
+    <% if j > 1 %>
+      </div><%# close reply %>
+    <% elsif j == 1 && !@appending_single_reply && !@replies %>
       <%= get_replies_container %>
     <% end %>
   <% end %>
-  <% unless @appending_reply %>
-      </div><%# close replies container %>
+  <% unless @appending_single_reply || @replies %>
+    </div><%# close replies container %>
+    <% if entries[i + 1] == nil && replies_to_load?(merged_comments[0]) %>
+      <%= more_replies_container(merged_comments[0]) %>
+    <% end %>
   <% end %>
+    </div><%# close comment %>
   <% if @posts %>
     <div class="show-replies" data-action="click->posts#expandReplies">
-      <% unless comments[i].replies.none? %>
-        <%= "#{comments[i].replies.last.user.name} replied" %>
+      <% unless entries[i].replies.none? %>
+        <%= "#{entries[i].replies.last.user.name} replied" %>
         <%= " · " %>
-        <%= reply_count_message(comments[i].replies, i) %>
+        <%= reply_count_message(entries[i].replies, i) %>
       <% end %>
     </div>
   <% end %>
-  </div>
+  </div><%# close comment chain %>
 <% end %>

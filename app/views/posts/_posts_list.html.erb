@@ -1,4 +1,3 @@
-<div data-infinite-scroll-target="entries">
   <% @posts.each do |post| %>
     <article class="post" data-controller="posts">
       <div class="post-main">
@@ -19,18 +18,23 @@
       <div class="post-sub">
         <%== likes_dislikes_container(post) %>
           <div class="likes">
-            <%= button_to likes_path(liked: true, likable_id: post.id,
-                likable_type: 'Post'), class: 'like-button', method: 'post',
-                data: {action: 'click->posts#like'} do
+            <%= button_to(
+                  likes_path(liked: true, likable_id: post.id,
+                  likable_type: 'Post'),
+                  class: 'like-button',
+                  method: 'post',
+                  data: {action: 'click->posts#like'}) do
             %>
               <i class='fa fa-thumbs-up'></i>
             <% end %>
             <span class="likes-count"><%= post.likes.length %></span>
           </div>
           <div class="dislikes">
-            <%= button_to likes_path(liked: false, likable_id: post.id,
-                likable_type: 'Post'), class: 'dislike-button', method: 'post',
-                data: {action: 'click->posts#dislike'} do
+            <%= button_to(
+                  likes_path(liked: false, likable_id: post.id,
+                  likable_type: 'Post'), class: 'dislike-button',
+                  method: 'post',
+                  data: {action: 'click->posts#dislike'}) do
             %>
               <i class='fa fa-thumbs-down'></i>
             <% end %>
@@ -47,16 +51,21 @@
       <div class="post-options">
         <span>Comment</span><span>Share</span>
       </div>
-      <section class="comment-section" data-comment-section-id="<%= post.id %>">
-        <% unloaded_comments_count = post.comments.length - 1 %>
+      <section class="comment-section"
+               data-comment-section-id="<%= post.id %>"
+               data-posts-target="commentSection">
+        <% unloaded_comments_count = get_unloaded_comments_count(post) %>
         <% if post.comments.length > 1 %>
-          <%= link_to "View #{unloaded_comments_count} previous comments",
-              section_comments_path(post_id: post.id,
-              comment_count: unloaded_comments_count), class: 'show-comments',
-              data: {comment_count: unloaded_comments_count}, remote: true
+          <%= link_to(
+                "View #{unloaded_comments_count} previous comments",
+                section_comments_path(post_id: post.id,
+                comment_count: unloaded_comments_count),
+                class: 'show-comments',
+                data: {comment_count: unloaded_comments_count},
+                remote: true)
           %>
         <% end %>
-        <% if post.comments.any?%>
+        <% if post.comments.any? %>
           <% @comments = preview_comment(post.comments) %>
           <%= render 'comments/section' %>
         <% end %>
@@ -74,8 +83,7 @@
       </div>
     </article>
   <% end %>
-</div>
 
-<div data-infinite-scroll-target="pagination" style="display:none">
+<div data-infinite-scroll-target="postsPagination" style="display:none">
   <%== pagy_nav(@pagy) %>
 </div>
