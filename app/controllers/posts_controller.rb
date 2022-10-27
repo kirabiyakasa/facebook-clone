@@ -9,10 +9,7 @@ class PostsController < ApplicationController
                       .order('created_at DESC')
                       .includes(:likes, :dislikes, :user, :comments, :replies,
                                # nested comments associations
-                               {comments: [:user, :likes, :dislikes, :replies,
-                                :recent_replies,
-                               # nested replies associations
-                               {recent_replies: [:user, :likes, :dislikes]}]}),
+                               {comments: [:user, :likes, :dislikes, :replies]}),
                   items: 5)
     respond_to do |format|
       format.html

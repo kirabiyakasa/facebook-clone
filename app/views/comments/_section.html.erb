@@ -19,7 +19,9 @@
   <% unless @appending_single_reply || @replies %>
     <div class="comment-chain" data-chain-id="<%= entries[i].id %>">
   <% end %>
+
   <% merged_comments = merge_comments(entries[i]) %>
+
   <% merged_comments.each do |comment| %>
     <div class="comment" data-controller="comments">
       <div class="comment-main">
@@ -79,20 +81,20 @@
         %>
       <% end %>
       <%= comment_options %>
-    <% j += 1%>
+    <% j += 1 %>
     <% if j > 1 %>
-      </div><%# close reply %>
-    <% elsif j == 1 && !@appending_single_reply && !@replies %>
+      </div><%# close initial reply %>
+    <% elsif loading_initial_replies?(j) %>
       <%= get_replies_container %>
     <% end %>
   <% end %>
-  <% unless @appending_single_reply || @replies %>
-    </div><%# close replies container %>
-    <% if entries[i + 1] == nil && replies_to_load?(merged_comments[0]) %>
-      <%= more_replies_container(merged_comments[0]) %>
-    <% end %>
+  <% if entries[i + 1] == nil && replies_to_load?(merged_comments[0]) %>
+    <%= more_replies_container(merged_comments[0]) %>
   <% end %>
-    </div><%# close comment %>
+  <% unless @appending_single_reply || @replies %>
+    </div><%# close initial replies container %>
+  <% end %>
+    </div><%# close comment/appending reply %>
   <% if @posts %>
     <div class="show-replies" data-action="click->posts#expandReplies">
       <% unless entries[i].replies.none? %>

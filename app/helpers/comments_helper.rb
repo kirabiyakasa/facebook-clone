@@ -58,6 +58,10 @@ module CommentsHelper
     end
   end
 
+  def loading_initial_replies?(j)
+    j == 1 && !@appending_single_reply && !@replies
+  end
+
   def replies_to_load?(comment)
     extra_replies_count = get_extra_replies_count(comment)
 
