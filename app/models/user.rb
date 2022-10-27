@@ -14,6 +14,9 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  validates :name, presence: true, uniqueness: true
+  validates :email, presence: true
+
   def friends
     friend_ids = friendships.where(confirmed: true).pluck(:friend_id)
     friend_ids += inverse_friendships.where(confirmed: true).pluck(:user_id)

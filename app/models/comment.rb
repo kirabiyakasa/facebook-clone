@@ -15,6 +15,7 @@ class Comment < ApplicationRecord
   scope :replied, -> { where.not(comment_id: nil) }
   scope :recent_replied, -> { where.not(comment_id: nil)
                                    .order('created_at ASC')
+                                   .includes(:user, :likes, :dislikes)
                                    .limit(REPLIES_PER_PAGE) }
 
   has_many :likes, -> { liked }, as: :likable, class_name: 'Like',
@@ -24,6 +25,10 @@ class Comment < ApplicationRecord
 
   #has_one :image
   #has_one :video
+
+  validates :body, length: { minimum: 1, maximum: 500 }
+  validates :user_id, presence: true
+  validates :post_id, presence: true
 
   def get_next_replies(comment, offset, limit)
     return comment.replies.order('created_at ASC')

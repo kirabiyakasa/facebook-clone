@@ -9,4 +9,5 @@ class Like < ApplicationRecord
   validates :likable_id, uniqueness: {
     :scope => [:likable_id, :likable_type]
   }
+  validates_inclusion_of :liked, in: [true, false]
 end
